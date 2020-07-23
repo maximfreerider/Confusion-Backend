@@ -1,16 +1,13 @@
-const createError = require('http-errors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const dishRouter = require('./routes/dishRoute');
-const promoRouter = require('./routes/promotionsRoute');
-const leaderRouter = require('./routes/leadersRoute');
+const dishRouter = require('./routes/dish.routes');
+const promoRouter = require('./routes/promotions.routes');
+const leaderRouter = require('./routes/leaders.routes');
 
 const mongoose = require('mongoose')
-const url = 'mongodb://localhost:27017/conFusion'
+const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/conFusion'
 const connect = mongoose.connect(url, {useFindAndModify: false,  useUnifiedTopology: true})
 
 connect
@@ -32,7 +29,6 @@ app.get('/', (req, res, next) => {
   res.json({msg: "your sever was started"})
 });
 
-app.use('/users', usersRouter);
 app.use('/dishes', dishRouter);
 app.use('/promotions', promoRouter);
 app.use('/leaders', leaderRouter);
@@ -43,5 +39,10 @@ app.use(function(req, res, next) {
   next();
 });
 
+// const PORT = process.evn.PORT || 3000
+//
+// app.listen(PORT, () => {
+//   console.log('started')
+// })
 
 module.exports = app;

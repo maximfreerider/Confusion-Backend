@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+require('mongoose-currency').loadType(mongoose)
 
 const protionSchema = new Schema({
   name: {
@@ -14,6 +15,15 @@ const protionSchema = new Schema({
   image: {
     type: String,
     required: true
+  },
+  label: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: mongoose.Types.Currency,
+    required: true,
+    min: 0
   }
 })
 

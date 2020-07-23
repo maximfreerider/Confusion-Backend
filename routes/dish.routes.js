@@ -47,7 +47,7 @@ dishRouter.route('/:dishId')
 
   .delete(async (req, res, next) => {
     try {
-      await Dishes.findByIdAndDelete(id)
+      await Dishes.findByIdAndRemove(req.params.dishId)
       res.status(204)
     } catch (e) {
       next(e)
@@ -61,7 +61,6 @@ dishRouter.route('/:dishId/comments')
     const comment = await Comment.create(req.body)
     console.log('created comment - ', comment)
     if (dish != null) {
-      // await dish.populate('comments').push(comment._id)
       dish.comments.push(comment._id)
       await dish.save()
       res.status(201).json(dish)
