@@ -1,25 +1,31 @@
 const express = require('express')
+const Promotion = require('../models/promotion.model')
 
 const promotionsRoute = express.Router()
 
-promotionsRoute.get('/', (req, res) => {
-    res.json({"promotions": []})
-})
+promotionsRoute.route('/')
+  .get( async (req, res, next) => {
+    const promotions = await Promotion.find()
+    res.json({promotions})
+  })
 
-promotionsRoute.get('/:promoId', (req, res) => {
-    res.json({"promotion": {id: req.params.promoId}})
-})
+  .post(async (req, res, next) => {
+    const newPromotion = await Promotion.create(req.body)
+    res.json(newPromotion)
+  })
 
-promotionsRoute.post('/', (req, res) => {
-    res.json({"newPromo": {...req.body}})
-})
+promotionsRoute.route('/:promoId')
+  .get(async (req, res) => {
+    const promotion = await Promotion.findById(req.params.promoId)
+    res.json(promotion)
+  })
 
-promotionsRoute.put('/:promoId', (req, res) => {
+  .patch(async (req, res) => {
     res.json({"msg": `you updated obj with id -  ${req.params.promoId}`})
-})
+  })
 
-promotionsRoute.delete('/:promoId', (req, res) => {
+  .delete((req, res) => {
     res.json({"msg": `obj with id - ${req.params.promoId} was deleted`})
-})
+  })
 
 module.exports = promotionsRoute
