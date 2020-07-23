@@ -10,7 +10,7 @@ const leaderRouter = require('./routes/leaders.routes');
 
 const mongoose = require('mongoose')
 const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/conFusion'
-const connect = mongoose.connect(url, {useFindAndModify: false,  useUnifiedTopology: true})
+const connect = mongoose.connect(url, { useFindAndModify: false,  useUnifiedTopology: true, useNewUrlParser: true })
 
 connect
   .then((db) => {
