@@ -31,8 +31,9 @@ const auth = (req, res, next) => {
   const authHeader = req.headers.authorization
   if (!authHeader) {
     res.setHeader('WWW-Authenticate', 'Basic')
-    res.status(401).json({"msg": "you are not auth"})
+    return res.status(401).json({"msg": "you are not auth"})
   }
+  console.log(authHeader)
   const auth = new Buffer(authHeader.split(' ')[1], 'base64').toString().split(':')
   const [username, password] = auth
   if (username === 'admin' && password === 'password') {
