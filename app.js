@@ -27,6 +27,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+const auth = (req, res, next) => {
+  const authHeader = req.headers.authorization
+  if (!authHeader) {
+    res.setHeader('WWW-Authenticate', 'Basic')
+    res.status(401).json({"msg": "you are not auth"})
+  }
+  const auth = new Buffer(authHeader.split(' ')[1], 'base64').toString().split(':')
+  const [username, password] = auth
+  if (username === 'admin' && password === 'password') {
+    next()
+  } else {
+    res.status(400).json({"mag": "credentials was not correct"})
+  }
+}
+
+app.use(auth)
+
 app.get('/', (req, res, next) => {
   res.json({msg: "your sever was started"})
 });
